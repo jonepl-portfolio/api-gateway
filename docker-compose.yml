@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  nginx:
+    container_name: api-gateway
+    image: ${DOCKER_USERNAME}/api-gateway:latest
+    depends_on:
+      - csv-merger
+      - web-portfolio
+      - portainer
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"  # Mounts the Docker socket as read-only to allow the proxy to monitor Docker events.
+      - "./vhost.d:/etc/nginx/vhost.d:ro" # Mounts a directory with virtual host configurations as read-only.
+      - certbot_config:/etc/letsencrypt
+      - /srv/docker/certs/www/certbot:/var/www/certbot
+      - .env:/etc/nginx/.env:ro
+    networks:
+      - portfolio-network
+    entrypoint: ["/bin/bash", "/etc/nginx/entrypoint.sh"]
+
+networks:
+  portfolio-network:
+    external: true
+
+volumes:
+  certbot_config:
+    external: true

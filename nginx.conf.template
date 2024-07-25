@@ -1,0 +1,164 @@
+events { 
+    worker_connections 1024;
+ }
+
+http {
+    include mime.types;
+
+    sendfile on;
+    keepalive_timeout  65;
+
+    upstream csv_merger_api {
+        server csv-merger:8080;
+    }
+
+    upstream web_portfolio {
+        server web-portfolio:80;
+    }
+
+    upstream portainer {
+        server portainer:9000;
+        # server portainer:8000;
+    }
+
+    server {
+        listen 80;
+        server_name ${SERVER_NAME};
+
+        location /.well-known/acme-challenge/ {
+            root /var/www/certbot;
+        }
+
+        location / {
+            return 301 https://$host$request_uri;
+        }
+    }
+
+    server {
+        listen 80;
+        server_name ${API_SUBDOMAIN};
+
+        location /.well-known/acme-challenge/ {
+            root /var/www/certbot;
+        }
+
+        location / {
+            return 301 https://$host$request_uri;
+        }
+    }
+
+    server {
+        listen 80;
+        server_name ${PORTAINER_SUBDOMAIN};
+
+        location /.well-known/acme-challenge/ {
+            root /var/www/certbot;
+        }
+
+        location / {
+            return 301 https://$host$request_uri;
+        }
+
+        # location / {
+        #     proxy_pass http://portainer;
+        #     proxy_set_header Host $host;
+        #     proxy_set_header X-Real-IP $remote_addr;
+        #     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        #     proxy_set_header X-Forwarded-Proto $scheme;
+        #     proxy_http_version 1.1;
+        #     proxy_set_header Upgrade $http_upgrade;
+        #     proxy_set_header Connection "upgrade";
+        # }
+    }
+
+    server {
+        listen 443 ssl;
+        server_name ${SERVER_NAME};
+
+        ssl_certificate /etc/letsencrypt/live/${DOMAIN}/${SSL_CERTIFICATE_NAME};
+        ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/${SSL_CERTIFICATE_KEY_NAME};
+
+        location / {
+            proxy_pass http://web_portfolio;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+
+    server {
+        listen 443 ssl;
+        server_name ${API_SUBDOMAIN};
+
+        ssl_certificate /etc/letsencrypt/live/${DOMAIN}/${SSL_CERTIFICATE_NAME};
+        ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/${SSL_CERTIFICATE_KEY_NAME};
+
+        location / {
+            proxy_pass http://csv_merger_api;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+
+    server {
+        listen 443 ssl;
+        server_name ${PORTAINER_SUBDOMAIN};
+
+        ssl_certificate /etc/letsencrypt/live/${DOMAIN}/${SSL_CERTIFICATE_NAME};
+        ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/${SSL_CERTIFICATE_KEY_NAME};
+
+        location / {
+            proxy_pass http://portainer;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+        }
+
+        location /api/ {
+            proxy_pass http://portainer/api/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        location /portainer/ {
+            proxy_pass http://portainer/portainer/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        location /runtime.942fa683274b3d3c26cf.js {
+            proxy_pass http://portainer/runtime.942fa683274b3d3c26cf.js;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        location /vendor.b4533442c1cbb18b98a1.css {
+            proxy_pass http://portainer/vendor.b4533442c1cbb18b98a1.css;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        location /main.712d6f30396f42406a3d.js {
+            proxy_pass http://portainer/main.712d6f30396f42406a3d.js;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+}

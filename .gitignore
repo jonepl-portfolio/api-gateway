@@ -1,0 +1,7 @@
+bak.docker-compose.yml
+nginx.conf
+tests/
+
+.env
+
+bitbucket-pipelines.yml

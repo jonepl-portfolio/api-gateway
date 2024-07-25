@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  nginx:
+    container_name: api-gateway
+    image: ${DOCKER_USERNAME}/api-gateway:latest
+    ports:
+      - "80:80"
+    volumes:
+      - .env:/etc/nginx/.env
+    networks:
+      - portfolio-network
+    entrypoint: ["/bin/bash", "/etc/nginx/entrypoint.sh"]
+
+networks:
+  portfolio-network:
+    external: false
