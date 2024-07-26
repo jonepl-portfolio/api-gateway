@@ -14,6 +14,8 @@ create-image:
 	docker build -t $(DOCKER_USERNAME)/api-gateway:latest .
 	docker image prune -f
 
+build-image: create-image
+
 # Creates local image verbose logs
 create-image-verbose:
 	docker build --progress=plain -t $(DOCKER_USERNAME)/api-gateway:latest .
