@@ -110,7 +110,7 @@ jobs:
           docker load --input ./versioned.docker
           docker load --input ./latest.docker
           current_version=$(cat VERSION)
-          docker push ${{ secrets.DOCKER_USERNAME }}/web-portfolio:$current_version
-          docker push ${{ secrets.DOCKER_USERNAME }}/web-portfolio:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/api-gateway:$current_version
+          docker push ${{ secrets.DOCKER_USERNAME }}/api-gateway:latest
 
       
