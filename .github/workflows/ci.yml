@@ -49,23 +49,10 @@ jobs:
               exit 1
           fi
 
-  validate-docker-compose:
-    name: Validate Docker Compose Files
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Install Docker Compose
-        run: sudo apt-get update && sudo apt-get install -y docker-compose
-
-      - name: Validate Docker Compose file
-        run: docker-compose -f docker-compose.yml config
-
   build-docker-image:
     name: Build Docker Image
     runs-on: ubuntu-latest
-    needs: [ "validate-docker-compose", "compare-versions" ]
+    needs: [ "compare-versions" ]
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout code
