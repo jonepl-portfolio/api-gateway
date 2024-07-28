@@ -1,5 +1,8 @@
 # API Gateway Changelog
 
+# 3.3.0
+* Modify docker-compose.yml to consume Docker Secrets instead of using a .env file.
+
 # 3.2.4
 * Modify docker compose to make Portainer not secure 4.
 

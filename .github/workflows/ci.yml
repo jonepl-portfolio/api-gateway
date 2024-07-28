@@ -8,7 +8,7 @@ on:
   pull_request:
     branches: 
       - main
-# // ${{ secrets.DOCKER_USERNAME }}
+
 jobs:
   compare-versions:
     name: Check Image Version Incremented
@@ -23,7 +23,7 @@ jobs:
           current_version=$(cat VERSION)
 
           # Fetch the previous semantic version (excluding 'latest') from Docker images
-          previous_version=$(docker image ls --filter "reference=${{ secrets.DOCKER_USERNAME }}/api-gateway" --format "{{.Repository}}:{{.Tag}}" | awk -F ':' '{print $2}' | grep -v 'latest' | sort -rV | head -n 1)
+          previous_version=$(docker image ls --filter "reference=jonepl/api-gateway" --format "{{.Repository}}:{{.Tag}}" | awk -F ':' '{print $2}' | grep -v 'latest' | sort -rV | head -n 1)
 
           # Function to compare semantic versions
           version_greater() {
@@ -70,9 +70,9 @@ jobs:
       - name: Build Docker Image
         run: |
           current_version=$(cat VERSION)
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/api-gateway:$current_version -t ${{ secrets.DOCKER_USERNAME }}/api-gateway:latest .
-          docker save --output versioned.docker ${{ secrets.DOCKER_USERNAME }}/api-gateway:$current_version
-          docker save --output latest.docker ${{ secrets.DOCKER_USERNAME }}/api-gateway:latest
+          docker build -t jonepl/api-gateway:$current_version -t jonepl/api-gateway:latest .
+          docker save --output versioned.docker jonepl/api-gateway:$current_version
+          docker save --output latest.docker jonepl/api-gateway:latest
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
@@ -110,8 +110,8 @@ jobs:
           docker load --input ./versioned.docker
           docker load --input ./latest.docker
           current_version=$(cat VERSION)
-          docker push ${{ secrets.DOCKER_USERNAME }}/api-gateway:$current_version
-          docker push ${{ secrets.DOCKER_USERNAME }}/api-gateway:latest
+          docker push jonepl/api-gateway:$current_version
+          docker push jonepl/api-gateway:latest
 
   deploy-docker-compose:
     name: Deploy Docker Compose
@@ -123,7 +123,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.4
+        uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 

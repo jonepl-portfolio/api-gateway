@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DEFAULT_SERVER_NAME="localhost"
-ENV_CONFIG=".env"
+ENV_CONFIG="/run/secrets/app_config"
 WORKING_DIR="/etc/nginx/"
 
 cd $WORKING_DIR

@@ -3,7 +3,7 @@ version: '3.8'
 services:
   nginx:
     container_name: api-gateway
-    image: ${DOCKER_USERNAME}/api-gateway:latest
+    image: jonepl/api-gateway:latest
     ports:
       - "80:80"
     volumes:
