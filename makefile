@@ -1,24 +1,13 @@
-ifndef DOCKER_USERNAME
-  ifneq (,$(wildcard .env))
-    include .env
-    export $(shell sed 's/=.*//' .env)
-  endif
-
-  ifndef DOCKER_USERNAME
-    $(error DOCKER_USERNAME is not set. Please set it in the environment or in the .env file)
-  endif
-endif
-
 # Creates local image
 create-image:
-	docker build -t $(DOCKER_USERNAME)/api-gateway:latest .
+	docker build -t jonepl/api-gateway:latest .
 	docker image prune -f
 
 build-image: create-image
 
 # Creates local image verbose logs
 create-image-verbose:
-	docker build --progress=plain -t $(DOCKER_USERNAME)/api-gateway:latest .
+	docker build --progress=plain -t jonepl/api-gateway:latest .
 	docker image prune -f
 
 # Starts local docker container

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DEFAULT_SERVER_NAME="localhost"
-ENV_CONFIG=".env"
+ENV_CONFIG="/run/secrets/app_config"
 WORKING_DIR="/etc/nginx/"
 
 cd $WORKING_DIR
@@ -10,7 +10,7 @@ cd $WORKING_DIR
 if [ -e $ENV_CONFIG ]; then
     echo "Setting environment variables for $ENV_CONFIG file"
     set -o allexport
-    . .env
+    . $ENV_CONFIG
     set +o allexport
 else
     echo "No $ENV_CONFIG found."
