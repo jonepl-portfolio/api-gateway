@@ -6,6 +6,7 @@ services:
     image: jonepl/api-gateway:latest
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - .env:/etc/nginx/.env
     networks:
