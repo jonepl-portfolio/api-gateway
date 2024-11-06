@@ -1,5 +1,8 @@
 # API Gateway Changelog
 
+$ 4.0.0
+* Add default ssl certificate. Refactored NGINX template and docker entrypoint script.
+
 # 3.3.0
 * Modify docker-compose.yml to consume Docker Secrets instead of using a .env file.
 
