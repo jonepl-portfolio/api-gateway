@@ -1,0 +1,11 @@
+DOMAIN="localhost"
+DOMAIN_IP="127.0.0.1"
+API_SUBDOMAIN="api.localhost"
+PORTAINER_SUBDOMAIN="portainer.localhost"
+
+SSL_CERTIFICATE_BASE_DIR="/etc/letsencrypt/live"
+SELF_SIGN_CERTIFICATE_NAME="selfsigned.crt"
+SELF_SIGN_CERTIFICATE_KEY_NAME="selfsigned.key"
+
+CA_SIGN_CERTIFICATE_NAME="fullchain.pem"
+CA_SIGN_CERTIFICATE_KEY_NAME="privkey.pem"

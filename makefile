@@ -28,3 +28,20 @@ remove-service:
 
 remove-image:
 	docker rm $(shell docker image ls --format "{{.ID}} {{.Repository}}" | grep 'api' | awk '{print $1}')
+
+test:
+	docker build -f tests/test.dockerfile -t api-gateway-test .
+	
+	# Restart the container if it is already running
+	if docker ps --filter "name=api-gateway-test" --filter "status=running" | grep -q api-gateway-test; then \
+		docker stop api-gateway-test && docker rm api-gateway-test; \
+	elif docker ps -a --filter "name=api-gateway-test" | grep -q api-gateway-test; then \
+		docker rm api-gateway-test; \
+	fi
+
+	docker run -dp 8080:80 --name api-gateway-test api-gateway-test
+
+	bats tests/test_api_gateway.bats
+
+	docker stop api-gateway-test
+	docker rm api-gateway-test
