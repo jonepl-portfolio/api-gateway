@@ -1,5 +1,8 @@
 # API Gateway Changelog
 
+# 4.0.3
+* Fix self signed certificate bug.
+
 # 4.0.2
 * Add fallback self signed certficate.
 
