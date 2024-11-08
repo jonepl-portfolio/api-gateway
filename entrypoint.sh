@@ -12,6 +12,30 @@ log_message() {
     echo "$(date '+%Y-%m-%d %H:%M:%S') [$level] $message"
 }
 
+check_env_variables() {
+  log_message "INFO" "Checking if all required environment variables are set..."
+  local required_env_vars=(
+    SERVER_NAME
+    DOMAIN
+    API_SUBDOMAIN
+    PORTAINER_SUBDOMAIN
+    SSL_CERTIFICATE_BASE_DIR
+    SELF_SIGN_CERTIFICATE_NAME
+    SELF_SIGN_CERTIFICATE_KEY_NAME
+    CA_SIGN_CERTIFICATE_NAME
+    CA_SIGN_CERTIFICATE_KEY_NAME
+  )
+
+  for env_var in "${required_env_vars[@]}"; do
+    if [[ -z "${!env_var}" ]]; then
+      log_message "ERROR" "The environment variable $env_var is not defined"
+      return 1
+    fi
+  done
+
+  return 0
+}
+
 # Initial environment variables from .env file
 if [ -e $ENV_CONFIG ]; then
     log_message "INFO" "Setting environment variables for $ENV_CONFIG file"
@@ -21,6 +45,8 @@ if [ -e $ENV_CONFIG ]; then
 else
     log_message "INFO" "No $ENV_CONFIG found."
 fi
+
+check_env_variables
 
 # Use default servername
 if [ -z "$DOMAIN" ]; then

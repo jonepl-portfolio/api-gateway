@@ -39,7 +39,7 @@ test:
 		docker rm api-gateway-test; \
 	fi
 
-	docker run -dp 8080:80 --name api-gateway-test api-gateway-test
+	docker run -dp 8080:80 --name api-gateway-test -v $(shell pwd)/tests/test.env:/run/secrets/app_config api-gateway-test
 
 	bats tests/test_api_gateway.bats
 

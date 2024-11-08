@@ -4,14 +4,14 @@ FROM nginx:1.25.5
 # Install bash
 RUN apt-get update && apt-get install -y bash
 
-# Copy the template nginx.conf to the container
+# Copy the nginx.conf template to the container
 COPY ../nginx.conf.template /etc/nginx/nginx.conf.template
-COPY ../test.txt /run/secrets/app_config
 
-# Create nginx configure form .env file (defaults to localhost)
+# Copy the entrypoint script to the container
 COPY ../entrypoint.sh /etc/nginx/entrypoint.sh
 RUN chmod +x /etc/nginx/entrypoint.sh
 
+# Create a directory for the self-signed certificate
 RUN mkdir -p /etc/letsencrypt/live/localhost
 
 # Generate a self-signed certificate for testing
