@@ -1,7 +1,6 @@
 bak.docker-compose.yml
 nginx.conf
-tests/
 
-.env
+/.env
 
 bitbucket-pipelines.yml
