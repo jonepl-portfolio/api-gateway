@@ -51,8 +51,8 @@ create_self_signed_certificate() {
     mkdir -p "$SSL_CERT_DIR" || { log_message "ERROR" "Could not create directory $SSL_CERT_DIR"; exit 1; }
 
     openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-        -keyout $SSL_CERTIFICATE \
-        -out $SSL_CERTIFICATE_KEY \
+        -keyout $SSL_CERTIFICATE_KEY \
+        -out $SSL_CERTIFICATE \
         -subj "/CN=localhost"
 }
 
