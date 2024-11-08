@@ -1,6 +1,12 @@
 # API Gateway Changelog
 
-$ 4.0.0
+# 4.0.2
+* Add fallback self signed certficate.
+
+# 4.0.1
+* Update entrypoint script
+
+# 4.0.0
 * Add default ssl certificate. Refactored NGINX template and docker entrypoint script.
 
 # 3.3.0
