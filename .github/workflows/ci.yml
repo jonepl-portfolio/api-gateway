@@ -70,7 +70,7 @@ jobs:
       - name: Start Test Container
         run: |
           docker build -f tests/test.dockerfile -t api-gateway-test .
-          docker run -dp 8080:80 --name api-gateway-test --network=test-network api-gateway-test
+          docker run -dp 8080:80 --name api-gateway-test -v tests/test.env:/run/secrets/app_config api-gateway-test
 
       - name: Verify Container is Running
         run: |
