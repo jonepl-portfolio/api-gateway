@@ -36,6 +36,26 @@ check_env_variables() {
   return 0
 }
 
+create_self_signed_certificate() {
+    local SSL_CERTIFICATE="$1"
+    local SSL_CERTIFICATE_KEY="$2"
+
+    # Check if the SSL_CERTIFICATE and SSL_CERTIFICATE_KEY are in the same directory
+    if [ "$(dirname "$SSL_CERTIFICATE")" != "$(dirname "$SSL_CERTIFICATE_KEY")" ]; then
+        log_message "ERROR" "SSL_CERTIFICATE and SSL_CERTIFICATE_KEY must be in the same directory"
+        exit 1
+    fi
+
+    SSL_CERT_DIR="$(dirname "$SSL_CERTIFICATE")"
+    log_message "INFO" "Creating self-signed certificate directory in $SSL_CERT_DIR"
+    mkdir -p "$SSL_CERT_DIR" || { log_message "ERROR" "Could not create directory $SSL_CERT_DIR"; exit 1; }
+
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+        -keyout $SSL_CERTIFICATE \
+        -out $SSL_CERTIFICATE_KEY \
+        -subj "/CN=localhost"
+}
+
 # Initial environment variables from .env file
 if [ -e $ENV_CONFIG ]; then
     log_message "INFO" "Setting environment variables for $ENV_CONFIG file"
@@ -62,6 +82,7 @@ if [ ! -f "$SSL_CERTIFICATE_PATH" ] || [ ! -f "$SSL_CERTIFICATE_KEY_PATH" ]; the
     log_message "INFO" "No CA-signed certificate or key found. Using self-signed certificate instead."
     SSL_CERTIFICATE_PATH="$SSL_CERTIFICATE_BASE_DIR/$DOMAIN/$SELF_SIGN_CERTIFICATE_NAME"
     SSL_CERTIFICATE_KEY_PATH="$SSL_CERTIFICATE_BASE_DIR/$DOMAIN/$SELF_SIGN_CERTIFICATE_KEY_NAME"
+    create_self_signed_certificate $SSL_CERTIFICATE_PATH $SSL_CERTIFICATE_KEY_PATH
 fi
 
 log_message "INFO" "Sourcing ssl certificate: $SSL_CERTIFICATE_PATH" $SSL_CERTIFICATE_KEY_PATH
