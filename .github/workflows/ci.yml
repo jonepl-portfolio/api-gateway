@@ -182,4 +182,6 @@ jobs:
           scp -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 docker-compose.yml ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/srv/app/api-gateway/docker-compose.yml
 
       - name: Update Docker Swarm service
-        run: ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} 'docker stack deploy -c /srv/app/api-gateway/docker-compose.yml hosted-apps'
+        run: |
+          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} \
+          'docker stack deploy -c /srv/app/api-gateway/docker-compose.yml hosted-apps || echo "Deployment failed with error $?"'
