@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y bash
 # Copy the template nginx.conf to the container
 COPY nginx.conf.template /etc/nginx/nginx.conf.template
 
-# Create nginx configure form .env file (defaults to localhost)
+# Copy the entrypoint script to the container
 COPY entrypoint.sh /etc/nginx/entrypoint.sh
 RUN chmod +x /etc/nginx/entrypoint.sh
 

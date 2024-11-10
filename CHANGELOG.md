@@ -1,5 +1,8 @@
 # API Gateway Changelog
 
+# 4.0.4
+* Code and Github Workflow clean up.
+
 # 4.0.3
 * Fix self signed certificate bug.
 
