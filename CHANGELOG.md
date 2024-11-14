@@ -1,5 +1,8 @@
 # API Gateway Changelog
 
+# 4.0.5
+* Update entrypoint scripts.
+
 # 4.0.4
 * Code and Github Workflow clean up.
 
