@@ -90,7 +90,7 @@ jobs:
   build-docker-image:
     name: Build Docker Image
     runs-on: ubuntu-latest
-    needs: [ "compare-versions" ]
+    needs: [ "tests" ]
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout code
