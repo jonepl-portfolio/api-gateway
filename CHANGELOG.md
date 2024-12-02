@@ -1,5 +1,8 @@
 # API Gateway Changelog
 
+# 4.0.6
+* Block Wordpress server probing.
+
 # 4.0.5
 * Update entrypoint scripts.
 
