@@ -1,5 +1,8 @@
 # API Gateway Changelog
 
+# 4.0.7
+* Add mail server to API gateway.
+
 # 4.0.6
 * Block Wordpress server probing.
 
