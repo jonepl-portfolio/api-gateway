@@ -5,10 +5,10 @@ FROM nginx:1.25.5
 RUN apt-get update && apt-get install -y bash
 
 # Copy the nginx.conf template to the container
-COPY ../nginx.conf.template /etc/nginx/nginx.conf.template
+COPY ../nginx/nginx.conf.template /etc/nginx/nginx.conf.template
 
 # Copy the entrypoint script to the container
-COPY ../entrypoint.sh /etc/nginx/entrypoint.sh
+COPY ../nginx/entrypoint.sh /etc/nginx/entrypoint.sh
 RUN chmod +x /etc/nginx/entrypoint.sh
 
 # Create a directory for the self-signed certificate
