@@ -1,5 +1,8 @@
 # API Gateway Changelog
 
+# 4.1.0
+* Rename secret and restructure repo folders.
+
 # 4.0.7
 * Add mail server to API gateway.
 

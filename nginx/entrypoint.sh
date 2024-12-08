@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DEFAULT_SERVER_NAME="localhost"
-APP_CONFIG="/run/secrets/app_config"
+SHARED_SECRET="/run/secrets/shared_secret"
 WORKING_DIR="/etc/nginx/"
 
 cd $WORKING_DIR
@@ -13,11 +13,11 @@ log_message() {
 }
 
 initialize_env_vars() {
-  # Initial environment variables from .env file
-  if [ -e "$APP_CONFIG" ]; then
-      log_message "INFO" "Setting environment variables for $APP_CONFIG file"
+  # Initial environment variables from docker secret file
+  if [ -e "$SHARED_SECRET" ]; then
+      log_message "INFO" "Setting environment variables for $SHARED_SECRET file"
       set -o allexport
-      . "$APP_CONFIG"
+      . "$SHARED_SECRET"
       set +o allexport
   else
       log_message "WARN" "No application configurations found."

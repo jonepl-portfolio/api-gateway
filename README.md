@@ -11,7 +11,6 @@ This repository contains the API Gateway for the hosted applications. The API Ga
 
 
 ## Design
-
 The API Gateway is designed to accept incoming requests and route them to the appropriate microservice. The gateway uses a reverse proxy to forward requests to the microservices.
 
 
@@ -31,7 +30,6 @@ Load balancing and scaling
 
 
 ## Local Testing
-
 Install bats
 ```
 $ brew install bats

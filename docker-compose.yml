@@ -17,7 +17,7 @@ services:
       - certbot_config:/etc/letsencrypt
       - /srv/docker/certs/www/certbot:/var/www/certbot
     secrets:
-      - app_config
+      - shared_secret
     networks:
       - portfolio-network
     entrypoint: ["/bin/bash", "/etc/nginx/entrypoint.sh"]
@@ -31,5 +31,5 @@ volumes:
     external: true
 
 secrets:
-  app_config:
+  shared_secret:
     external: true
